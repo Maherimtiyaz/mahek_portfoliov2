@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useTheme } from '@/hooks/useTheme'
 import { Sun, Moon, Menu, X } from 'lucide-react'
 import type { ActiveSection } from '@/types'
+import Magnetic from '@/components/ui/Magnetic'
 
 const NAV: { label: string; href: string; id: ActiveSection }[] = [
   { label: 'About',      href: '#about',      id: 'about'      },
@@ -75,12 +76,14 @@ export default function Navbar({ active }: { active: ActiveSection }) {
               {dark ? <Sun size={14} /> : <Moon size={14} />}
             </button>
 
-            <a
-              href="#contact"
-              className="hidden sm:block px-4 py-1.5 text-[13px] font-semibold rounded-full bg-[var(--t1)] text-[var(--bg)] hover:opacity-80 transition-opacity"
-            >
-              Hire me
-            </a>
+            <Magnetic>
+              <a
+                href="#contact"
+                className="hidden sm:block px-4 py-1.5 text-[13px] font-semibold rounded-full bg-[var(--t1)] text-[var(--bg)] hover:opacity-80 transition-opacity"
+              >
+                Hire me
+              </a>
+            </Magnetic>
 
             <button
               className="md:hidden w-8 h-8 flex items-center justify-center text-[var(--t3)] hover:text-[var(--t1)] transition-colors"

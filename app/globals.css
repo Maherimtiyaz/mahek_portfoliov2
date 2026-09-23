@@ -19,6 +19,9 @@
   ::selection{background:var(--t1);color:var(--bg)}
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+  @media (hover: hover) and (pointer: fine) {
+    body, a, button { cursor: none; }
+  }
 }
 @layer utilities {
   .bg-site{background:var(--bg)}.bg-site2{background:var(--bg2)}.bg-site3{background:var(--bg3)}

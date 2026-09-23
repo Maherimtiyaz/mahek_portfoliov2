@@ -1,7 +1,8 @@
 'use client'
 import { motion } from 'framer-motion'
 import { ArrowDown, Github, Linkedin, Twitter } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import Magnetic from '@/components/ui/Magnetic'
 
 const ROLES = [
   'Backend Engineer',
@@ -23,16 +24,38 @@ const f = (delay = 0) => ({
 
 export default function HeroSection() {
   const [role, setRole] = useState(0)
+  const spotRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const t = setInterval(() => setRole((p) => (p + 1) % ROLES.length), 3000)
     return () => clearInterval(t)
   }, [])
 
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = spotRef.current
+    if (!el) return
+    const r = e.currentTarget.getBoundingClientRect()
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+    el.style.setProperty('--my', `${e.clientY - r.top}px`)
+  }
+
   return (
     <section
       id="hero"
+      onMouseMove={onMove}
       className="relative min-h-screen flex flex-col justify-end overflow-hidden bg-[var(--bg)]"
     >
+      {/* ── Cursor-reactive spotlight ── */}
+      <div
+        ref={spotRef}
+        aria-hidden
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          background:
+            'radial-gradient(420px circle at var(--mx, 50%) var(--my, 30%), var(--t2) 0%, transparent 72%)',
+          opacity: 0.07,
+        }}
+      />
+
       {/* ── Dot grid ── */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -101,20 +124,24 @@ export default function HeroSection() {
 
           <motion.div {...f(0.3)} className="flex flex-col items-start sm:items-end gap-4">
             <div className="flex gap-3">
-              <motion.a
-                href="#projects"
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                className="px-5 py-2.5 rounded-full bg-[var(--t1)] text-[var(--bg)] text-sm font-semibold hover:opacity-80 transition-opacity"
-              >
-                View projects
-              </motion.a>
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                className="px-5 py-2.5 rounded-full border border-[var(--b2)] text-[var(--t2)] text-sm font-medium hover:border-[var(--t1)] hover:text-[var(--t1)] transition-all"
-              >
-                Get in touch
-              </motion.a>
+              <Magnetic>
+                <motion.a
+                  href="#projects"
+                  whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  className="px-5 py-2.5 rounded-full bg-[var(--t1)] text-[var(--bg)] text-sm font-semibold hover:opacity-80 transition-opacity"
+                >
+                  View projects
+                </motion.a>
+              </Magnetic>
+              <Magnetic>
+                <motion.a
+                  href="#contact"
+                  whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  className="px-5 py-2.5 rounded-full border border-[var(--b2)] text-[var(--t2)] text-sm font-medium hover:border-[var(--t1)] hover:text-[var(--t1)] transition-all"
+                >
+                  Get in touch
+                </motion.a>
+              </Magnetic>
             </div>
             <div className="flex gap-5">
               {[
